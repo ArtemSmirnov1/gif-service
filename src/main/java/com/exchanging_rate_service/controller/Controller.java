@@ -32,6 +32,9 @@ public class Controller {
   @Value("${gif-service.search-key}")
   private String key;
 
+  @Value("${currency-service.file-extension}")
+  private String fileExtension;
+
   final ExchangingRateService exchangingRateService;
   final GifService gifService;
 
@@ -40,13 +43,13 @@ public class Controller {
     this.gifService = gifService;
   }
 
-  @GetMapping("/get-the-gif")
+  @GetMapping("/result-gif")
   ResponseEntity<String> getGif() {
     LocalDate localDate = LocalDate.now().minusDays(1);
     Double yesterdayResult =
         Double.valueOf(
             exchangingRateService
-                .getExchangingRateForYesterday(localDate + ".json", appId)
+                .getExchangingRateForYesterday(localDate + fileExtension, appId)
                 .getRates()
                 .get(currencyName));
     Double todayResult =
